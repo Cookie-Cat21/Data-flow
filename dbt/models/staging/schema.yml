@@ -1,0 +1,74 @@
+version: 2
+
+sources:
+  - name: silver
+    database: hive_metastore
+    schema: dataflow
+    tables:
+      - name: orders
+      - name: order_items
+      - name: order_payments
+      - name: order_reviews
+      - name: customers
+      - name: sellers
+      - name: products
+
+models:
+  - name: stg_orders
+    description: "Cleaned and renamed orders from Silver layer."
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+      - name: customer_id
+        tests: [not_null]
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ["created","approved","invoiced","processing","shipped","delivered","unavailable","canceled"]
+
+  - name: stg_order_items
+    description: "Cleaned order line items with price calculations."
+    columns:
+      - name: order_id
+        tests: [not_null]
+      - name: product_id
+        tests: [not_null]
+      - name: item_price
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_order_payments
+    description: "Cleaned payment records."
+    columns:
+      - name: order_id
+        tests: [not_null]
+      - name: payment_value
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_order_reviews
+    description: "Customer reviews with sentiment classification."
+    columns:
+      - name: order_id
+        tests: [not_null]
+      - name: review_score
+        tests:
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests: [unique, not_null]
+
+  - name: stg_sellers
+    columns:
+      - name: seller_id
+        tests: [unique, not_null]
+
+  - name: stg_products
+    columns:
+      - name: product_id
+        tests: [unique, not_null]

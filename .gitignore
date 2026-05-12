@@ -1,0 +1,47 @@
+# ── Secrets ─────────────────────────────────────────────
+.env
+.env.local
+*.pem
+*.key
+
+# ── Data (large files, never commit raw CSVs) ───────────
+data/olist/
+*.csv
+*.parquet
+
+# ── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+
+# ── dbt ─────────────────────────────────────────────────
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
+
+# ── Airflow ─────────────────────────────────────────────
+airflow/logs/
+airflow/plugins/__pycache__/
+
+# ── Node / Next.js ──────────────────────────────────────
+dashboard/node_modules/
+dashboard/.next/
+dashboard/out/
+dashboard/.env.local
+
+# ── OS ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ─────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp

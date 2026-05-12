@@ -1,0 +1,35 @@
+kafka:
+  bootstrap_servers: "${KAFKA_BOOTSTRAP_SERVERS}"
+  api_key: "${KAFKA_API_KEY}"
+  api_secret: "${KAFKA_API_SECRET}"
+  security_protocol: SASL_SSL
+  sasl_mechanism: PLAIN
+
+topics:
+  orders: dataflow.orders
+  order_items: dataflow.order_items
+  order_payments: dataflow.order_payments
+  order_reviews: dataflow.order_reviews
+  customers: dataflow.customers
+  sellers: dataflow.sellers
+  products: dataflow.products
+
+replay:
+  speed_multiplier: 100       # 100x real time
+  batch_size: 50              # events per batch
+  interval_ms: 500            # ms between batches
+  start_date: "2016-09-04"    # first Olist order date
+  loop: false                 # replay once; set true to loop indefinitely
+
+data:
+  olist_dir: "data/olist"
+  files:
+    orders: olist_orders_dataset.csv
+    order_items: olist_order_items_dataset.csv
+    order_payments: olist_order_payments_dataset.csv
+    order_reviews: olist_order_reviews_dataset.csv
+    customers: olist_customers_dataset.csv
+    sellers: olist_sellers_dataset.csv
+    products: olist_products_dataset.csv
+    product_category_translation: product_category_name_translation.csv
+    geolocation: olist_geolocation_dataset.csv

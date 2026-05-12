@@ -1,0 +1,39 @@
+name: dataflow
+version: "1.0.0"
+config-version: 2
+
+profile: dataflow
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  dataflow:
+    staging:
+      +schema: silver
+      +materialized: view
+      +tags: ["staging"]
+    intermediate:
+      +schema: silver
+      +materialized: ephemeral
+      +tags: ["intermediate"]
+    marts:
+      +schema: gold
+      +materialized: table
+      +tags: ["marts"]
+      +file_format: delta
+      +location_root: "{{ env_var('DELTA_GOLD_PATH', 'dbfs:/dataflow/gold') }}"
+    reporting:
+      +schema: gold
+      +materialized: table
+      +tags: ["reporting"]
+      +file_format: delta
+      +location_root: "{{ env_var('DELTA_GOLD_PATH', 'dbfs:/dataflow/gold') }}"
+
+vars:
+  bronze_database: hive_metastore
+  silver_database: hive_metastore
+  gold_database: hive_metastore

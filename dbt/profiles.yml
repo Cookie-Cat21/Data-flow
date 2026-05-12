@@ -1,0 +1,21 @@
+# Copy to ~/.dbt/profiles.yml and fill in your Databricks credentials.
+# Never commit this file with real credentials.
+dataflow:
+  target: dev
+  outputs:
+    dev:
+      type: databricks
+      catalog: hive_metastore
+      schema: dataflow_dev
+      host: "{{ env_var('DATABRICKS_HOST') }}"
+      http_path: "/sql/1.0/warehouses/{{ env_var('DATABRICKS_WAREHOUSE_ID') }}"
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      threads: 4
+    prod:
+      type: databricks
+      catalog: hive_metastore
+      schema: dataflow
+      host: "{{ env_var('DATABRICKS_HOST') }}"
+      http_path: "/sql/1.0/warehouses/{{ env_var('DATABRICKS_WAREHOUSE_ID') }}"
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      threads: 8

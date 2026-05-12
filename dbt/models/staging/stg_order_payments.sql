@@ -1,0 +1,20 @@
+{{ config(materialized='view') }}
+
+with source as (
+    select * from {{ source('silver', 'order_payments') }}
+),
+
+renamed as (
+    select
+        order_id,
+        payment_sequential,
+        payment_type,
+        payment_installments,
+        payment_value,
+        _ingestion_date,
+        _kafka_timestamp                        as ingested_at
+    from source
+    where order_id is not null
+)
+
+select * from renamed
