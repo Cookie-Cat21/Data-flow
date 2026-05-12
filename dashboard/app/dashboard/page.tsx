@@ -11,7 +11,7 @@ import type { DashboardPayload, KPISnapshot, GMVDataPoint, SellerRow, OrderFunne
 
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? "ws://localhost:8080";
 
-function fmt(n: number, style: "currency" | "number" | "percent" = "number", compact = false) {
+function fmt(n: number, style: Intl.NumberFormatOptions["style"] = "decimal", compact = false) {
   const opts: Intl.NumberFormatOptions = {
     style,
     currency: "USD",
